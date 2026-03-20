@@ -127,6 +127,7 @@ char*           safestrcpy(char*, const char*, int);
 int             strlen(const char*);
 int             strncmp(const char*, const char*, uint);
 char*           strncpy(char*, const char*, int);
+int             itoa(int, char*);
 
 // syscall.c
 void            argint(int, int*);
@@ -183,3 +184,12 @@ void            virtio_disk_intr(void);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
+
+// limits.c
+extern const uint64 total_mem_bytes;
+extern const uint total_cpu_percent;
+extern uint global_cpu_limit_percent;
+extern struct spinlock cpu_limit_lock;
+extern uint global_mem_limit_percent;
+extern struct spinlock mem_limit_lock;
+void limits_init(void);

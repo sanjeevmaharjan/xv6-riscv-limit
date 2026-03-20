@@ -105,3 +105,39 @@ strlen(const char *s)
   return n;
 }
 
+int
+itoa(int x, char *buf)
+{
+  int i = 0;
+  int neg = 0;
+
+  if (x == 0) {
+    buf[i++] = '0';
+    buf[i] = 0;
+    return 1;
+  }
+
+  if (x < 0) {
+    neg = 1;
+    x = -x;
+  }
+
+  while (x > 0) {
+    buf[i++] = '0' + (x % 10);
+    x /= 10;
+  }
+
+  if (neg)
+    buf[i++] = '-';
+
+  // reverse
+  for (int j = 0, k = i - 1; j < k; j++, k--) {
+    char t = buf[j];
+    buf[j] = buf[k];
+    buf[k] = t;
+  }
+
+  buf[i] = 0;
+  return i;
+}
+

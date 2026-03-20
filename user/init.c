@@ -18,6 +18,7 @@ main(void)
 
   if(open("console", O_RDWR) < 0){
     mknod("console", CONSOLE, 0);
+    mknod("cpu_limit", CPUDEV, 0);
     open("console", O_RDWR);
   }
   dup(0);  // stdout
