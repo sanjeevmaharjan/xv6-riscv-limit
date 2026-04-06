@@ -107,3 +107,25 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+extern uint ticks;
+extern struct spinlock tickslock;
+
+uint64
+sys_sleep(void)
+{
+  int ms;
+  argint(0, &ms);
+
+  int ticks_needed = ms / 10;  // 1 tick = 10 ms
+
+  acquire(&tickslock);
+  uint start = ticks;
+
+  while (ticks - start < ticks_needed) {
+    sleep(&ticks, &tickslock);
+  }
+
+  release(&tickslock);
+  return 0;
+}
