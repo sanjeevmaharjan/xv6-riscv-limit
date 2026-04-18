@@ -104,4 +104,11 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+  // CPU Limits
+  int cputime_used;             // total ticks used by the process
+  int cputime_limit;            // max allowed ticks for the process
+
+  // Mem Limits
+  uint mem_limit;                // max allowed bytes for the process (0 means no limit)
 };

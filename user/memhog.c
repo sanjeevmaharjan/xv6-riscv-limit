@@ -4,6 +4,7 @@
 
 int main(void)
 {
+    setmemlimit(4096 * 10); // Set memory limit 10 pages (1 page = 4096 bytes)
     char *p;
     int i = 0;
     while (1)
@@ -11,12 +12,12 @@ int main(void)
         p = sbrk(4096);
         if (p == (char *)-1)
         {
-            printf("sbrk failed at iteration %d\n", i);
+            printf("process pid %d Memory limit reached after allocating %d pages\n", getpid(), i);
             break;
         }
         i++;
     }
     printf("Allocated %d pages\n", i);
-    sleep(2000);
+    sleep(200); // Set some time to observe the process in the process list (ps command)
     exit(0);
 }

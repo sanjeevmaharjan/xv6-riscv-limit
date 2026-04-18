@@ -240,15 +240,19 @@ growproc(int n)
   struct proc *p = myproc();
 
   sz = p->sz;
+  uint64 new_sz = sz + n;
   if(n > 0){
-    if(sz + n > TRAPFRAME) {
+    if(new_sz > TRAPFRAME) {
       return -1;
     }
-    if((sz = uvmalloc(p->pagetable, sz, sz + n, PTE_W)) == 0) {
+    if (p->mem_limit > 0 && new_sz > p->mem_limit) {
+      return -1;
+    }
+    if((sz = uvmalloc(p->pagetable, sz, new_sz, PTE_W)) == 0) {
       return -1;
     }
   } else if(n < 0){
-    sz = uvmdealloc(p->pagetable, sz, sz + n);
+    sz = uvmdealloc(p->pagetable, sz, new_sz);
   }
   p->sz = sz;
   return 0;

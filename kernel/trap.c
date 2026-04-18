@@ -81,8 +81,16 @@ usertrap(void)
     kexit(-1);
 
   // give up the CPU if this is a timer interrupt.
-  if(which_dev == 2)
+  if(which_dev == 2) {
+    if (p) {
+      p->cputime_used++;
+      if (p->cputime_limit > 0 && p->cputime_used >= p->cputime_limit) {
+        printf("pid %d (%s) killed by cputime limit\n", p->pid, p->name);
+        setkilled(p);
+      }
+    }
     yield();
+  }
 
   prepare_return();
 

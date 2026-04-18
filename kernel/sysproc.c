@@ -129,3 +129,29 @@ sys_sleep(void)
   release(&tickslock);
   return 0;
 }
+
+uint64
+sys_setcputimelimit(void)
+{
+  int ticks;
+  argint(0, &ticks);
+  if(ticks < 0 || ticks < 0)
+    return -1;
+
+  struct proc *p = myproc();
+  p->cputime_limit = ticks;
+  return 0;
+}
+
+uint64
+sys_setmemlimit(void)
+{
+  int bytes;
+  argint(0, &bytes);
+  if(bytes < 0 || bytes < 0)
+    return -1;
+
+  struct proc *p = myproc();
+  p->mem_limit = bytes;
+  return 0;
+}
